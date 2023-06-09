@@ -1,34 +1,46 @@
-pragma ever-solidity >= 0.61.2;
-pragma AbiHeader expire;
-pragma AbiHeader pubkey;
+pragma solidity >=0.6.0;
 
+contract OneStone {
+    string public name;
+    string public symbol;
+    uint256 public totalSupply;
+    uint256 public taxRateSell;
+    uint256 public taxRateBuy;
 
-contract Sample {
-    uint16 static _nonce;
+    mapping(address => uint256) private balances;
 
-    uint state;
+    event Transfer(address indexed from, address indexed to, uint256 value);
 
-    event StateChange(uint _state);
-
-    constructor(uint _state) public {
-        tvm.accept();
-
-        setState(_state);
+    constructor() {
+        name = "OneStone";
+        symbol = "OST";
+        totalSupply = 1000000000;
+        taxRateSell = 5;
+        taxRateBuy = 5;
+        balances[msg.sender] = totalSupply;
     }
 
-    function setState(uint _state) public {
-        tvm.accept();
-        state = _state;
-
-        emit StateChange(_state);
+    function balanceOf(address account) public view returns (uint256) {
+        return balances[account];
     }
 
-    function getDetails()
-        external
-        view
-    returns (
-        uint _state
-    ) {
-        return state;
+    function transfer(address to, uint256 value) public returns (bool) {
+        require(value <= balances[msg.sender], "Insufficient balance");
+
+        uint256 taxAmount = calculateTax(value, taxRateSell);
+        uint256 netAmount = value - taxAmount;
+
+        balances[msg.sender] -= value;
+        balances[to] += netAmount;
+        balances[address(this)] += taxAmount;
+
+        emit Transfer(msg.sender, to, netAmount);
+        emit Transfer(msg.sender, address(this), taxAmount);
+
+        return true;
+    }
+
+    function calculateTax(uint256 value, uint256 rate) private pure returns (uint256) {
+        return (value * rate) / 100;
     }
 }
