@@ -1,0 +1,1 @@
+{"version":3,"file":"everwallet.d.ts","sourceRoot":"","sources":["../../../../src/providers/providers/everwallet.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,eAAe,EAAE,MAAM,aAAa,CAAC;AAG9C,OAAO,cAAc,MAAM,6BAA6B,CAAC;AAMzD,OAAO,EAAE,cAAc,EAAE,CAAC;AAW1B,eAAO,MAAM,gBAAgB;;;;;;;;CAoB5B,CAAC;AAGF,eAAO,MAAM,SAAS,cAErB,CAAC;AAkBF,eAAO,MAAM,UAAU,EAAE,eAyFxB,CAAC"}

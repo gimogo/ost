@@ -1,0 +1,44 @@
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/**/*.yaml'
+      - '.gitignore'
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - name: Create tag
+        id: create_tag
+        uses: jaywcjlove/create-tag-action@v1.3.10
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          package-path: package.json
+      - name: Generate Changelog
+        id: create_changelog
+        uses: jaywcjlove/changelog-generator@v1.4.8
+        if: steps.create_tag.outputs.successful
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          head-ref: ${{steps.create_tag.outputs.version}}
+          filter: '[R|r]elease[d]\s+[v|V]\d(\.\d+){0,2}'
+      - name: Create Release
+        uses: jaywcjlove/create-tag-action@v1.3.4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          package-path: package.json
+          release: true
+          body: |
+            ${{ steps.create_changelog.outputs.compareurl }}
+  
+            ${{ steps.create_changelog.outputs.changelog }}
+      - run: yarn
+      - run: yarn build
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}

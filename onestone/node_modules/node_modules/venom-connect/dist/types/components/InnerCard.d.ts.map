@@ -1,0 +1,1 @@
+{"version":3,"file":"InnerCard.d.ts","sourceRoot":"","sources":["../../../src/components/InnerCard.tsx"],"names":[],"mappings":";AAEA,OAAO,EAAE,WAAW,EAAE,MAAM,UAAU,CAAC;AA8CvC,aAAK,WAAW,GAAG;IACjB,EAAE,EAAE,MAAM,GAAG,IAAI,CAAC;IAClB,WAAW,EAAE,WAAW,CAAC;CAC1B,CAAC;AACF,eAAO,MAAM,MAAM,wBAAyB,WAAW,uBAmBtD,CAAC"}
